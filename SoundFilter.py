@@ -1,11 +1,13 @@
 import speech_recognition as sr
+from MemeAudioPlayer import MemeAudioPlayer
 
 
 class SoundFilter:
 
-    def __init__(self):
+    def __init__(self, memer: MemeAudioPlayer):
         self.__curses = None
         self.__initCursesList()
+        self.__memer = memer
 
     def recognizeSoundWithFilter(self) -> str:
         speech: str = self.recognizeSound()
@@ -14,6 +16,8 @@ class SoundFilter:
         for saidWord in speechList:
             if saidWord in self.__curses:
                 print("watch your mouth!")
+                # play some meme song
+                self.__memer.playRandomSong()
 
         return speech
 
@@ -37,6 +41,6 @@ class SoundFilter:
         self.__curses = ["f***", "fuck", "fu**", "motherfucker", "m***********", "mother******", "shit", "s***", "sh**",
                          "bitch", "b****", "bit**", "ass", "a**", "as*", "dick", "di**", "d***", "dickhead", "dick****",
                          "d*******", "asshole", "ass****", "a******", "bastard", "bast***", "b******", "cunt", "cu**",
-                         "c***", "gay", "ga*", "g**", "lesbian", "les****", "l******", "shitty", "shity"
-                         "damn", "da**", "d***", "twat", "tw**", "t***", "fucking", "fuck***", "f******", "motherfuker",
-                         "mother******"]
+                         "c***", "gay", "ga*", "g**", "lesbian", "les****", "l******", "shitty", "shity", "fucker",
+                         "f*****", "fuck**", "f******", "fuckers", "damn", "da**", "d***", "dicks", "d****", "twat",
+                         "tw**", "t***", "fucking", "fuck***", "f******", "motherfuker", "mother******"]

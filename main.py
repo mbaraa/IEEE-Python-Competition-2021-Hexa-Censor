@@ -1,4 +1,7 @@
+from SoundFilter import SoundFilter
 
 if __name__ == "__main__":
-    hello = "PyCharm"
-    print(f"Hello {hello}!")
+    sf = SoundFilter()
+    while True:
+        print(f"you said: {sf.recognizeSoundWithFilter()}")
+

@@ -27,6 +27,7 @@ class SoundFilter:
         with sr.Microphone() as source:
             # setting time limit to make it look like as if it's live or something :)
             # also also 1.5s is the perfect(not much, but does the job) time, well I tested a lot
+            print("speak now!")
             audio = r.listen(source, phrase_time_limit=1.5)
 
             try:

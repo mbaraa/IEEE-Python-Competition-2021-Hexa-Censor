@@ -5,10 +5,11 @@ import random
 
 
 class MemeAudioPlayer:
-    def __init__(self):
+    def __init__(self, parentWindow: QtWidgets.QApplication):
         self.__memeSongsFiles = None
         self.__songIndex = 0
         self.__initMemeSongsFiles()
+        self.__parent = parentWindow
 
     def playRandomSong(self):
         index = random.randint(0, 18)
@@ -22,7 +23,7 @@ class MemeAudioPlayer:
 
     def __playSong0(self, index: int):
         # qt player magic
-        app = QtWidgets.QApplication(sys.argv)
+        app = self.__parent
         fileName = "res/" + self.__memeSongsFiles[index]
         fullPath = QtCore.QDir.current().absoluteFilePath(fileName)
         url = QtCore.QUrl.fromLocalFile(fullPath)
@@ -35,6 +36,7 @@ class MemeAudioPlayer:
 
         # wait 10s then exit
         time.sleep(10)
+        player.stop()
         app.sync()
 
     def __initMemeSongsFiles(self):

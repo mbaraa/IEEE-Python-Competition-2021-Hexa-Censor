@@ -8,16 +8,20 @@ from SoundFilter import SoundFilter
 
 class App(QWidget):
 
-    def __init__(self):
+    def __init__(self, parent: QApplication):
         super().__init__()
-        self.__soundFilter = SoundFilter(MemeAudioPlayer())
+        self.__parent = parent
+        self.__soundFilter = SoundFilter(MemeAudioPlayer(self.__parent))
         self.__isListening: bool = False
-        self.__curseCounter: int = 0
+        self.__curseCounter: int = 0  # for some reason 0 isn't working
 
         # qt widgets
         self.__listenStatus: QtWidgets.QLabel = None
         self.__curseCounterText: QtWidgets.QLabel = None
         self.__startListening: QtWidgets.QPushButton = None
+
+        # ui translator 
+        self.__translate = QtCore.QCoreApplication.translate
 
         self.initUI()
         self.initFancyUI()
@@ -39,26 +43,37 @@ class App(QWidget):
         self.show()
 
     def initFancyUI(self):
-        translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(translate("HexaCensor", "HexaCensor"))
-        self.__listenStatus.setText(translate("HexaCensor",
-                                              "<html><head/><body><p><span style=\" font-size:22pt; color:#1a5fb4;\">Not Litening!</span></p></body></html>"))
-        self.__curseCounterText.setText(translate("HexaCensor",
-                                                  "<html><head/><body><p><span style=\" font-size:18pt;\">Curse Counter: 0</span></p></body></html>"))
-        self.__startListening.setText(translate("HexaCensor", "Start Listening!"))
+        self.setWindowTitle(self.__translate("HexaCensor", "HexaCensor"))
+        self.__listenStatus.setText(self.__translate("HexaCensor",
+                                                     "<html><head/><body><p><span style=\" font-size:22pt; color:#1a5fb4;\">Not Litening!</span></p></body></html>"))
+        self.__curseCounterText.setText(self.__translate("HexaCensor",
+                                                         "<html><head/><body><p><span style=\" font-size:18pt;\">Curse Counter: 0</span></p></body></html>"))
+        self.__startListening.setText(self.__translate("HexaCensor", "Start Listening!"))
 
     @pyqtSlot()
     def __startListeningOnClick(self):
         # flip listening state
         self.__isListening = not self.__isListening
 
+        if self.__isListening:
+            self.__listenStatus.setText(self.__translate("HexaCensor",
+                                                         "<html><head/><body><p><span style=\" font-size:22pt; color:#c90909;\">Litening!</span></p></body></html>"))
+        else:
+            self.__listenStatus.setText(self.__translate("HexaCensor",
+                                                         "<html><head/><body><p><span style=\" font-size:22pt; color:#1a5fb4;\">Not Litening!</span></p></body></html>"))
+
+        self.__parent.sync()
+
         while self.__isListening:
-            self.curseCounter = "Curse Counter: " + str(self.__curseCounter)
             if self.__soundFilter.recognizeSoundWithFilter():
                 self.__curseCounter -= -1
+
+            self.__curseCounterText.setText(self.__translate("HexaCensor",
+                                                             f"<html><head/><body><p><span style=\" font-size:18pt;\">Curse Counter: {self.__curseCounter}</span></p></body></html>"))
+            self.__parent.sync()
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    ex = App()
+    ex = App(app)
     sys.exit(app.exec())

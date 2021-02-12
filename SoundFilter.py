@@ -9,17 +9,17 @@ class SoundFilter:
         self.__initCursesList()
         self.__memer = memer
 
-    def recognizeSoundWithFilter(self) -> str:
+    # returns true when there's a curse word
+    def recognizeSoundWithFilter(self) -> bool:
         speech: str = self.recognizeSound()
         # get list of the said sentence to check if any of the said words is a bad word or not :)
         speechList: list = speech.split(" ")
         for saidWord in speechList:
             if saidWord in self.__curses:
-                print("watch your mouth!")
-                # play some meme song
                 self.__memer.playRandomSong()
+                return True
 
-        return speech
+        return False
 
     def recognizeSound(self) -> str:
         r = sr.Recognizer()

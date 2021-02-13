@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtGui import QPixmap
 import sys
 from MemeAudioPlayer import MemeAudioPlayer
 from SoundFilter import SoundFilter
@@ -30,8 +31,10 @@ class App(QtWidgets.QWidget):
         self.setWindowTitle("HexaCensor")
         self.setGeometry(10, 10, 720, 410)  # left, top, width, height
 
-        self.__listenStatus = QtWidgets.QLabel("Not Listening!", self)
-        self.__listenStatus.setGeometry(30, 170, 250, 50)
+        self.__listenStatus = QtWidgets.QLabel(self)
+        self.__listenStatus.setGeometry(15, 65, 300, 302)
+        micOff = QPixmap("res/mic_off.png")
+        self.__listenStatus.setPixmap(micOff)
 
         self.__curseCounterText = QtWidgets.QLabel(self)
         self.__curseCounterText.setGeometry(370, 140, 300, 50)
@@ -45,8 +48,7 @@ class App(QtWidgets.QWidget):
     # setup widgets' text content
     def __initFancyUI(self):
         self.setWindowTitle(self.__translate("HexaCensor", "HexaCensor"))
-        self.__listenStatus.setText(self.__translate("HexaCensor",
-                                                     "<html><head/><body><p><span style=\" font-size:22pt; color:#1a5fb4;\">Not Listening!</span></p></body></html>"))
+
         self.__curseCounterText.setText(self.__translate("HexaCensor",
                                                          "<html><head/><body><p><span style=\" font-size:18pt;\">Curse Counter: 0</span></p></body></html>"))
         self.__startListening.setText(self.__translate("HexaCensor", "Start/Stop Listening!"))
@@ -58,13 +60,11 @@ class App(QtWidgets.QWidget):
 
         # update listening status
         if self.__isListening:
-            self.__listenStatus.setText(
-                self.__translate("HexaCensor",
-                                 "<html><head/><body><p><span style=\" font-size:22pt; color:#c90909;\">Listening!</span></p></body></html>"))
+            micOff = QPixmap("res/mic_on.png")
+            self.__listenStatus.setPixmap(micOff)
         else:
-            self.__listenStatus.setText(
-                self.__translate("HexaCensor",
-                                 "<html><head/><body><p><span style=\" font-size:22pt; color:#1a5fb4;\">Not Listening!</span></p></body></html>"))
+            micOff = QPixmap("res/mic_off.png")
+            self.__listenStatus.setPixmap(micOff)
         # sync to update UI's content
         self.__parent.sync()
 

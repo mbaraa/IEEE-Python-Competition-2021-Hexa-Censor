@@ -39,4 +39,4 @@ then you have a nice conversation with some memes if someone drops an `f` bomb o
 
 - [PyAudio](https://pypi.org/project/PyAudio/) to record audio from an input device
 - [SpeechRecognition](https://pypi.org/project/SpeechRecognition/) :)
-- [PyQt5](https://pypi.org/project/PyQt5/) to play mp3 files
+- [PyQt5](https://pypi.org/project/PyQt5/) the whole GUI is Qt, also to play mp3 files; Qt is just amazing :)
